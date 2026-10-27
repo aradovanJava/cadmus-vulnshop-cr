@@ -1,0 +1,22 @@
+# Snyk policy file.
+#
+# Empty on purpose. During the lab you will be asked whether any of the
+# dependency findings should be ignored here, and what a defensible ignore
+# entry must contain.
+#
+# The shape of an entry, for reference:
+#
+#   ignore:
+#     SNYK-JAVA-ORGAPACHECOMMONS-2841885:
+#       - '*':
+#           reason: >
+#             Not reachable - no StringSubstitutor call exists in this
+#             codebase. Verified at build 1.0.0-TRAINING by source search.
+#           expires: 2026-10-01T00:00:00.000Z
+#
+# Note that 'reason' and 'expires' are both required for the entry to be
+# defensible. An ignore with neither is a suppression, not a decision.
+
+version: v1.25.0
+ignore: {}
+patch: {}

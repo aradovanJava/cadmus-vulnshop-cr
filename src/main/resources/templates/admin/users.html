@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Accounts')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: nav}"></div>
+
+<main>
+    <div class="card">
+        <h1>Accounts</h1>
+        <table>
+            <tr><th>Username</th><th>Email</th><th>Role</th><th>Tenant</th><th>Risk</th><th>Password hash</th></tr>
+            <tr th:each="a : ${accounts}">
+                <td th:text="${a.username}">user</td>
+                <td th:text="${a.email}">mail</td>
+                <td th:text="${a.role}">role</td>
+                <td th:text="${a.tenant}">tenant</td>
+                <td th:text="${a.internalRiskScore}">0</td>
+                <td class="muted" th:text="${a.passwordHash}">hash</td>
+            </tr>
+        </table>
+    </div>
+</main>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

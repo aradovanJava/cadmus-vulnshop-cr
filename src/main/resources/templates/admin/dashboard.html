@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Admin')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: nav}"></div>
+
+<main>
+    <h1>Administration</h1>
+
+    <div class="grid">
+        <div class="card"><h3 th:text="${userCount}">0</h3><p class="muted">accounts</p></div>
+        <div class="card"><h3 th:text="${orderCount}">0</h3><p class="muted">orders</p></div>
+        <div class="card"><h3 th:text="${productCount}">0</h3><p class="muted">products</p></div>
+    </div>
+
+    <div class="card">
+        <h3>Edit product description</h3>
+        <p class="muted">HTML formatting is supported and rendered as-is on the storefront.</p>
+        <form method="post" th:action="@{/admin/products/save}">
+            <p><label class="muted">Product id</label><input name="id" value="1"></p>
+            <p><label class="muted">Name</label><input name="name"></p>
+            <p><label class="muted">Description</label><textarea name="description" rows="4"></textarea></p>
+            <button type="submit">Save</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h3>Support tools</h3>
+        <form method="get" th:action="@{/admin/impersonate}">
+            <p><label class="muted">View the site as</label><input name="username" value="alice"></p>
+            <button type="submit">Impersonate</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h3>Accounts</h3>
+        <p><a th:href="@{/admin/users}">Open the account list</a></p>
+    </div>
+</main>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

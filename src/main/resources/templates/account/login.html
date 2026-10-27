@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Log in')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: nav}"></div>
+
+<main>
+    <div class="card" style="max-width: 420px;">
+        <h1>Log in</h1>
+
+        <!-- The error text comes back on the query string after a redirect. -->
+        <p th:if="${error}" style="color:#b23a24" th:utext="${error}">error</p>
+
+        <form method="post" th:action="@{/account/login}">
+            <p><label class="muted">Username</label>
+               <input name="username" autocomplete="username"></p>
+            <p><label class="muted">Password</label>
+               <input name="password" type="password" autocomplete="current-password"></p>
+            <button type="submit">Log in</button>
+        </form>
+
+        <p class="muted" style="margin-top:1rem">
+            Training accounts: alice, bob, carol, adminjoe - all with the same password.
+        </p>
+    </div>
+</main>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

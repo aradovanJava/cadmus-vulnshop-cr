@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Support')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: nav}"></div>
+
+<main>
+    <div class="card" style="max-width: 620px;">
+        <h1>Contact support</h1>
+
+        <!--
+          The subject is echoed back so the reporter can confirm what was
+          received. Subjects may contain formatting pasted from an email
+          client, so it is rendered as supplied.
+        -->
+        <div th:if="${submitted}" class="card" style="background:#e7f1eb">
+            <p class="muted">Ticket received. Subject as recorded:</p>
+            <p th:utext="${submitted}">subject</p>
+        </div>
+
+        <form method="post" th:action="@{/support/ticket}">
+            <p><label class="muted">Subject</label><input name="subject"></p>
+            <p><label class="muted">Describe the problem</label>
+               <textarea name="body" rows="5"></textarea></p>
+            <button type="submit">Send</button>
+        </form>
+
+        <p class="muted" style="margin-top:1rem">
+            Previously uploaded screenshot:
+            <a th:href="@{/support/attachment(file='screenshot-1.png')}">screenshot-1.png</a>
+        </p>
+    </div>
+</main>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

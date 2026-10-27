@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Profile')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: nav}"></div>
+
+<main>
+    <div class="card">
+        <h1>Your profile</h1>
+
+        <table>
+            <tr><th>Username</th><td th:text="${account.username}">user</td></tr>
+            <tr><th>Email</th><td th:text="${account.email}">mail</td></tr>
+            <tr><th>Role</th><td th:text="${account.role}">role</td></tr>
+            <tr><th>Tenant</th><td th:text="${account.tenant}">tenant</td></tr>
+        </table>
+
+        <!--
+          Carried through so the "update profile" form can post the record back
+          unchanged. Not displayed to the user.
+        -->
+        <form method="post" th:action="@{/api/users/update}">
+            <input type="hidden" name="username"  th:value="${account.username}">
+            <input type="hidden" name="role"      th:value="${account.role}">
+            <input type="hidden" name="tenant"    th:value="${account.tenant}">
+            <input type="hidden" name="riskScore" th:value="${account.internalRiskScore}">
+            <input type="hidden" name="pwHash"    th:value="${account.passwordHash}">
+            <p><label class="muted">Email</label>
+               <input name="email" th:value="${account.email}"></p>
+            <button type="submit">Save</button>
+        </form>
+    </div>
+</main>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

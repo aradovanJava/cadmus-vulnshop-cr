@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Error')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: nav}"></div>
+
+<main>
+    <div class="card">
+        <h1 th:text="'Error ' + ${status}">Error</h1>
+        <p th:text="${message}">message</p>
+        <p class="muted" th:text="'Request: ' + ${path}">path</p>
+
+        <!--
+          Added during an incident so on-call engineers could diagnose without
+          server access. Never reverted.
+        -->
+        <div th:if="${trace}">
+            <p class="muted" th:text="'Exception: ' + ${exceptionClass}">class</p>
+            <pre th:text="${trace}">stack trace</pre>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

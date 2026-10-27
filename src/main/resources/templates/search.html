@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Search — CADMUS VulnShop</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 2rem auto; max-width: 60rem; color: #17394d; }
+    table { border-collapse: collapse; width: 100%; margin-top: 1.5rem; }
+    th, td { text-align: left; padding: .5rem .75rem; border-bottom: 1px solid #e1eaef; }
+  </style>
+</head>
+<body>
+  <h1>Search results</h1>
+
+  <!--
+    ==========================================================================
+     A05:2025 - INJECTION (reflected cross-site scripting)
+    ==========================================================================
+     Thymeleaf escapes by default - that is secure-by-default in action.
+     This template opts OUT of the protection by using th:utext ("unescaped
+     text") instead of th:text. One character, one whole vulnerability class.
+
+     Remediation for CR2: use th:text. If unescaped output is genuinely
+     required, sanitise with an allow-list library first and add a Content
+     Security Policy - see docs/FIXES.md.
+  -->
+  <p>You searched for: <span th:utext="${query}">query</span></p>
+
+  <!-- The same value, rendered safely, for side-by-side comparison in N1/CR2 -->
+  <p style="color:#5c6e7a">Escaped rendering of the same value:
+     <span th:text="${query}">query</span></p>
+
+  <table>
+    <tr><th>Product</th><th>Description</th><th>Price</th></tr>
+    <tr th:each="p : ${results}">
+      <td th:text="${p.name}">name</td>
+      <!-- A05 - stored XSS sink: product descriptions come from the database
+           and are also rendered unescaped. -->
+      <td th:utext="${p.description}">description</td>
+      <td th:text="${p.price}">0.00</td>
+    </tr>
+  </table>
+
+  <p><a href="/">Back</a></p>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('My orders')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: nav}"></div>
+
+<main>
+    <div class="card">
+        <h1>My orders</h1>
+        <table>
+            <tr><th>Order</th><th>Product</th><th>Qty</th><th>Total</th><th>Status</th></tr>
+            <tr th:each="o : ${orders}">
+                <td><a th:href="@{'/account/orders/' + ${o.id}}" th:text="${o.id}">1000</a></td>
+                <td th:text="${o.productName}">product</td>
+                <td th:text="${o.quantity}">1</td>
+                <td th:text="'EUR ' + ${o.total}">0.00</td>
+                <td th:text="${o.status}">status</td>
+            </tr>
+        </table>
+    </div>
+</main>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

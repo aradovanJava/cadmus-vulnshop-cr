@@ -1,0 +1,42 @@
+# CADMUS-CR-14 · CR1 analysis toolchain
+#
+# Both services bind to 127.0.0.1 only. Do not change this: the application
+# under test is deliberately exploitable and must not be reachable off-host.
+#
+#   docker compose up -d sonarqube
+#
+# SonarQube needs a minute or two on first start. Default credentials are
+# admin/admin and it will force a change on first login - use a throwaway
+# password, this instance is disposable.
+
+services:
+
+  sonarqube:
+    image: sonarqube:community
+    container_name: cadmus-sonarqube
+    ports:
+      - "127.0.0.1:9000:9000"
+    environment:
+      SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: "true"
+    volumes:
+      - sonar_data:/opt/sonarqube/data
+      - sonar_logs:/opt/sonarqube/logs
+      - sonar_extensions:/opt/sonarqube/extensions
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+
+  # Used in CR4 rather than CR1, included so the compose file is complete.
+  zap:
+    image: zaproxy/zap-stable
+    container_name: cadmus-zap
+    profiles: ["dast"]
+    command: zap.sh -daemon -host 0.0.0.0 -port 8090 -config api.disablekey=true
+    ports:
+      - "127.0.0.1:8090:8090"
+
+volumes:
+  sonar_data:
+  sonar_logs:
+  sonar_extensions:

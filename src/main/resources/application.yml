@@ -1,0 +1,71 @@
+# =============================================================================
+#  A02:2025 - SECURITY MISCONFIGURATION      (excerpt B in learning node N1)
+# =============================================================================
+#  Nine distinct findings in this one file, and not a line of Java among them.
+#  A02 moved from #5 in 2021 to #2 in 2025, because an increasing share of an
+#  application's behaviour is determined by configuration rather than by code.
+#
+#  Root cause: ONE configuration file serves every environment. There is no
+#  production profile, so there is nothing for this to be a relaxation OF.
+#  The commit message for most of this was "fix local dev setup".
+# =============================================================================
+
+server:
+  # Containment: bind to loopback only. Do NOT change this on a shared network.
+  address: 127.0.0.1
+  port: 8080
+  error:
+    # A02 + A10 - internal class names, framework versions and query fragments
+    #             returned to the caller on any unhandled exception.
+    include-stacktrace: always
+    include-message: always
+    include-binding-errors: always
+
+spring:
+  application:
+    name: cadmus-vulnshop
+  h2:
+    console:
+      # A02 - a database console inside the application's own address space,
+      #       reachable without authentication, protected by an empty password.
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: false   # kept false; the rest is bad enough
+  datasource:
+    url: jdbc:h2:mem:shop;DB_CLOSE_DELAY=-1
+    username: sa
+    # A02 + A04 - blank credential
+    password: ""
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      # A02 - the application may alter its own schema at runtime
+      ddl-auto: update
+    defer-datasource-initialization: true
+    show-sql: true
+  sql:
+    init:
+      mode: always
+
+management:
+  endpoints:
+    web:
+      exposure:
+        # A02 - /env, /heapdump, /configprops, /mappings and everything else.
+        #       Environment variables routinely contain the very secrets the
+        #       code was careful not to hardcode.
+        include: "*"
+  endpoint:
+    health:
+      # A02 - confirms internal hostnames, database reachability, downstream services
+      show-details: always
+    env:
+      access: unrestricted
+
+logging:
+  level:
+    # A02 - debug logging left on; combined with show-sql this writes query
+    #       parameters, and AuditService writes credentials.
+    org.springframework.web: DEBUG
+    eu.cadmus.vulnshop: DEBUG

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Cart')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: nav}"></div>
+
+<main>
+    <div class="card" style="max-width: 520px;">
+        <h1>Checkout</h1>
+
+        <form method="post" th:action="@{/cart/checkout}">
+            <!--
+              The product identity and price are carried in hidden fields so
+              that the checkout handler does not need a second database read.
+            -->
+            <input type="hidden" name="productId"   th:value="${product.id}">
+            <input type="hidden" name="productName" th:value="${product.name}">
+            <input type="hidden" name="unitPrice"   th:value="${product.price}">
+
+            <p><strong th:text="${product.name}">Product</strong></p>
+            <p>Unit price: <span th:text="'EUR ' + ${product.price}">0.00</span></p>
+
+            <p><label class="muted">Quantity</label>
+               <input name="quantity" type="number" value="1"></p>
+            <p><label class="muted">Shipping address</label>
+               <input name="shippingAddress" value=""></p>
+
+            <button type="submit">Place order</button>
+        </form>
+    </div>
+</main>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

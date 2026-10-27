@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <!--
+    ===================================================================
+      CADMUS-CR-14  ·  VulnShop  ·  DELIBERATELY VULNERABLE APPLICATION
+      Training target for Secure Coding Java (LMS nodes N1-N4, CR1-CR4)
+      DO NOT DEPLOY.  Read SAFETY.md before running.
+    ===================================================================
+  -->
+
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>4.0.0</version>
+    <relativePath/>
+  </parent>
+
+  <groupId>eu.cadmus</groupId>
+  <artifactId>vulnshop-cr</artifactId>
+  <version>1.0.0-TRAINING</version>
+  <name>CADMUS VulnShop</name>
+  <description>Intentionally vulnerable Spring Boot application covering OWASP Top 10:2025</description>
+
+  <properties>
+    <java.version>25</java.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-thymeleaf</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+
+    <!--
+      ===== A03:2025 Software Supply Chain Failures =====================
+      The three dependencies below are pinned to versions with published
+      CVEs, on purpose. They are the SCA target for CR3.
+
+      Learning point for N1/N4: the version numbers are the SYMPTOM.
+      The root cause is that this project has no dependency policy, no
+      SBOM, no integrity verification and no answer to the question
+      "is the vulnerable code path actually reachable from ours?".
+
+      CR3 task: identify these with SCA, assess reachability, remediate,
+      and generate an SBOM. Do NOT simply bump the numbers - explain the
+      decision for each one.
+      ==================================================================
+    -->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-text</artifactId>
+      <version>1.9</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+      <version>3.2.1</version>
+    </dependency>
+    <!-- added in 2019 for one utility method; nobody knows if it is still called -->
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>24.1.1-jre</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+      <!--
+        A03: NOTE FOR CR3 - there is deliberately NO SBOM plugin here and no
+        dependency-check plugin. Adding CycloneDX + OWASP Dependency-Check is
+        part of the CR3 / CR4 remediation work.
+      -->
+    </plugins>
+  </build>
+</project>

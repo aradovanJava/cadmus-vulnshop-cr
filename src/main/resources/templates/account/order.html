@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Order')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: nav}"></div>
+
+<main>
+    <div class="card">
+        <h1 th:text="'Order ' + ${order.id}">Order</h1>
+        <table>
+            <tr><th>Customer</th><td th:text="${order.customerUsername}">user</td></tr>
+            <tr><th>Product</th><td th:text="${order.productName}">product</td></tr>
+            <tr><th>Quantity</th><td th:text="${order.quantity}">1</td></tr>
+            <tr><th>Unit price</th><td th:text="'EUR ' + ${order.unitPrice}">0.00</td></tr>
+            <tr><th>Total</th><td th:text="'EUR ' + ${order.total}">0.00</td></tr>
+            <tr><th>Ship to</th><td th:text="${order.shippingAddress}">address</td></tr>
+            <tr><th>Status</th><td th:text="${order.status}">status</td></tr>
+        </table>
+        <p class="muted">Order numbers are issued sequentially from 1000.</p>
+    </div>
+</main>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

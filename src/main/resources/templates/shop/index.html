@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Shop')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: nav}"></div>
+
+<main>
+    <h1>Products</h1>
+
+    <form method="get" th:action="@{/shop}" class="card">
+        <label class="muted">Filter by category</label>
+        <select name="category" onchange="this.form.submit()">
+            <option value="">All categories</option>
+            <option value="peripherals" th:selected="${category == 'peripherals'}">Peripherals</option>
+            <option value="displays" th:selected="${category == 'displays'}">Displays</option>
+            <option value="accessories" th:selected="${category == 'accessories'}">Accessories</option>
+        </select>
+    </form>
+
+    <div class="grid">
+        <div class="card" th:each="p : ${products}">
+            <h3 th:text="${p.name}">Product</h3>
+            <p class="muted" th:text="${p.category}">category</p>
+            <p><strong th:text="'EUR ' + ${p.price}">0.00</strong></p>
+            <a th:href="@{'/shop/product/' + ${p.id}}">Details</a>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

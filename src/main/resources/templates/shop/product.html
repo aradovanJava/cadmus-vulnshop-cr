@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Product')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: nav}"></div>
+
+<main>
+    <div class="card">
+        <h1 th:text="${product.name}">Product</h1>
+        <p class="muted" th:text="${product.category}">category</p>
+
+        <!--
+          Product descriptions are authored in the admin panel and may contain
+          formatting such as <b> or <ul>, so the description is rendered
+          without escaping in order to preserve it.
+        -->
+        <div th:utext="${product.description}">description</div>
+
+        <p><strong th:text="'EUR ' + ${product.price}">0.00</strong></p>
+
+        <form method="get" th:action="@{/cart}">
+            <input type="hidden" name="productId" th:value="${product.id}">
+            <button type="submit">Add to cart</button>
+        </form>
+    </div>
+</main>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

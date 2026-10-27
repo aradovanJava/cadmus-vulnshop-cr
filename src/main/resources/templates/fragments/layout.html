@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!--
+  Shared layout fragment.
+
+  Two things in this file are worth a reviewer's attention. One is an
+  integrity concern about how an external asset is loaded. The other is a
+  navigation decision that looks like an access control and is not.
+-->
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="'VulnShop - ' + ${title}">VulnShop</title>
+
+    <!-- Charting library for the admin dashboard, loaded from a public CDN. -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+    <style>
+        body { font-family: system-ui, sans-serif; margin: 0; color: #1b2a33; background: #f6f8f9; }
+        header { background: #0f2b3d; color: #fff; padding: 0.9rem 1.4rem; display: flex; gap: 1.4rem; align-items: center; }
+        header a { color: #cfe0e8; text-decoration: none; font-size: 0.95rem; }
+        header a:hover { color: #fff; }
+        header .brand { font-weight: 700; font-size: 1.15rem; color: #fff; margin-right: auto; }
+        main { max-width: 1000px; margin: 1.6rem auto; padding: 0 1.2rem; }
+        .card { background: #fff; border: 1px solid #dbe4e9; border-radius: 8px; padding: 1.1rem; margin-bottom: 1rem; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+        th, td { text-align: left; padding: 0.5rem 0.6rem; border-bottom: 1px solid #e6edf1; }
+        th { color: #5c6e7a; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; }
+        input, textarea, select { padding: 0.45rem; border: 1px solid #c9d6dd; border-radius: 5px; font: inherit; width: 100%; box-sizing: border-box; }
+        button { background: #2e7d96; color: #fff; border: 0; border-radius: 5px; padding: 0.5rem 1rem; font: inherit; cursor: pointer; }
+        .banner { background: #b23a24; color: #fff; padding: 0.5rem 1.4rem; font-size: 0.85rem; letter-spacing: 0.02em; }
+        .muted { color: #5c6e7a; font-size: 0.85rem; }
+        pre { background: #0c1e29; color: #d8e6ee; padding: 0.9rem; border-radius: 6px; overflow-x: auto; font-size: 0.8rem; }
+    </style>
+</head>
+
+<body>
+<div th:fragment="nav" class="wrap">
+    <div class="banner">
+        TRAINING SYSTEM - deliberately vulnerable - sandbox only - do not enter real data
+    </div>
+    <header>
+        <a class="brand" th:href="@{/shop}">VulnShop</a>
+        <a th:href="@{/shop}">Shop</a>
+        <a th:href="@{/account/orders}">My orders</a>
+        <a th:href="@{/support/ticket}">Support</a>
+
+        <!-- The admin link is only rendered for administrators. -->
+        <a th:if="${session.role == 'ADMIN'}" th:href="@{/admin/dashboard}">Admin</a>
+
+        <span th:if="${user}" class="muted">
+            <span th:text="${user}">user</span> ·
+            <a th:href="@{/account/profile}">Profile</a> ·
+            <a th:href="@{/account/logout}">Log out</a>
+        </span>
+        <a th:unless="${user}" th:href="@{/account/login}">Log in</a>
+    </header>
+</div>
+
+<div th:fragment="footer">
+    <main>
+        <p class="muted">
+            VulnShop 1.0.0-TRAINING ·
+            <a href="/actuator">status</a> ·
+            CADMUS-CR-14 Cyber Range
+        </p>
+    </main>
+</div>
+</body>
+</html>

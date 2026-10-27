@@ -1,0 +1,67 @@
+# =============================================================================
+#  CADMUS-CR-14 · CR4 / level E1 starter workflow
+#
+#  This file is DELIBERATELY INCOMPLETE. It builds and it passes, and it
+#  provides no security assurance whatsoever. Completing it is the exercise.
+#
+#  A03 teaching note: every `uses:` below is pinned to a mutable tag rather
+#  than a commit SHA. That is itself a supply-chain finding - fix it as part
+#  of the task.
+# =============================================================================
+
+name: build-and-scan
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read          # keep this minimal; widen only with justification
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4          # TODO(CR4): pin by commit SHA
+      - uses: actions/setup-java@v4        # TODO(CR4): pin by commit SHA
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+
+      - name: Build
+        run: mvn -B clean verify
+
+      # ---------------------------------------------------------------------
+      # TODO(CR4 · step 1) - SAST
+      #   Add SonarQube analysis and make the build FAIL on the quality gate.
+      #   A scan whose result nobody blocks on is a report, not a control.
+      #
+      #   mvn sonar:sonar -Dsonar.host.url=... -Dsonar.token=...
+      #   then wait for, and enforce, the gate status.
+      # ---------------------------------------------------------------------
+
+      # ---------------------------------------------------------------------
+      # TODO(CR4 · step 2) - SCA + SBOM
+      #   Add OWASP Dependency-Check (or equivalent) and the CycloneDX plugin.
+      #   Fail on new critical findings. Publish the SBOM as a build artefact.
+      #   Decide - and write down - what your suppression policy is, and who
+      #   may approve a suppression.
+      # ---------------------------------------------------------------------
+
+      # ---------------------------------------------------------------------
+      # TODO(CR4 · step 3) - DAST
+      #   Start the application, run an OWASP ZAP baseline scan against it,
+      #   and fail on new alerts above your agreed threshold.
+      #   Question to answer in your report: which of the findings from CR1
+      #   does ZAP catch here, and which does it structurally cannot?
+      # ---------------------------------------------------------------------
+
+      # ---------------------------------------------------------------------
+      # TODO(CR4 · step 4) - regression tests
+      #   Add the tests you wrote in CR2. Each one must fail against the
+      #   vulnerable code and pass against the fixed code. This is what stops
+      #   the weakness returning silently in six months.
+      # ---------------------------------------------------------------------

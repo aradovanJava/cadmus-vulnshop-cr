@@ -15,6 +15,12 @@
             <option value="displays" th:selected="${category == 'displays'}">Displays</option>
             <option value="accessories" th:selected="${category == 'accessories'}">Accessories</option>
         </select>
+        <!--/* CR-14 level A2: this link is how a crawling DAST scanner reaches the
+             REST search (ProductController.search, A05). Nothing else in the UI
+             points at /api/**, so without it ZAP's spider never requests the
+             endpoint and reports no SQL injection. Thymeleaf drops this comment. */-->
+        <p class="muted">Same list for the mobile app:
+            <a th:href="@{/api/products/search(category=${#strings.isEmpty(category) ? 'peripherals' : category}, sort='name')}">JSON</a></p>
     </form>
 
     <div class="grid">

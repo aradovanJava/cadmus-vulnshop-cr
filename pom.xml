@@ -28,6 +28,18 @@
   <properties>
     <java.version>25</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <!--
+      SonarScanner for Maven ("mvn sonar:sonar", tools\scan-sonar.ps1) reads
+      these and ignores sonar-project.properties, which stays for the
+      sonar-scanner CLI and the lab text. Keep the two in step. Without them
+      the project is published as eu.cadmus:vulnshop-cr and the Thymeleaf
+      templates are not analysed at all.
+    -->
+    <sonar.projectKey>cadmus-vulnshop-cr</sonar.projectKey>
+    <sonar.projectName>CADMUS VulnShop (CR1)</sonar.projectName>
+    <sonar.sources>src/main</sonar.sources>
+    <sonar.inclusions>**/*.java,**/*.html,**/*.yml,**/*.xml,**/*.sql</sonar.inclusions>
   </properties>
 
   <dependencies>
@@ -102,5 +114,20 @@
         part of the CR3 / CR4 remediation work.
       -->
     </plugins>
+    <pluginManagement>
+      <plugins>
+        <!--
+          SonarScanner for Maven, pinned. "mvn sonar:sonar" (tools\scan-sonar.ps1,
+          Cyber Range levels A4 and E1) resolves the "sonar" prefix from here;
+          Sonar retired the unpinned sonar:sonar shorthand on 1 May 2026, and
+          without this entry Maven fails with "No plugin found for prefix 'sonar'".
+        -->
+        <plugin>
+          <groupId>org.sonarsource.scanner.maven</groupId>
+          <artifactId>sonar-maven-plugin</artifactId>
+          <version>5.6.0.6792</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
   </build>
 </project>
